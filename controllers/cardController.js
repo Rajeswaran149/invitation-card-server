@@ -9,12 +9,16 @@ dotenv.config();
 exports.updateAndSendCard = async (req, res) => {
   try {
     const { userText, userEmail } = req.body;
-    const imagePath = path.join(__dirname, "..", "uploads", "userCard.png");
+    
+    // Ensure the uploaded file has a unique name
+    const uploadedFileName = req.file.filename;  // Get the unique filename from multer
+    const imagePath = path.join(__dirname, "..", "uploads", uploadedFileName); // Use the unique path
 
     if (!req.file) {
       return res.status(400).send("No file uploaded.");
     }
 
+    // Create a new card document in the database with a unique file path
     const newCard = new Card({
       userEmail,
       userMessage: userText,
@@ -23,6 +27,7 @@ exports.updateAndSendCard = async (req, res) => {
 
     await newCard.save();
 
+    // Set up nodemailer transport
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -31,6 +36,7 @@ exports.updateAndSendCard = async (req, res) => {
       },
     });
 
+    // Send email with attachment (the uploaded card)
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: userEmail,
@@ -38,8 +44,8 @@ exports.updateAndSendCard = async (req, res) => {
       text: "Here is your updated card!",
       attachments: [
         {
-          filename: "userCard.png",
-          path: imagePath,
+          filename: uploadedFileName,  // Use the unique filename for the attachment
+          path: imagePath,             // The unique path to the uploaded file
         },
       ],
     };
