@@ -11,8 +11,8 @@ exports.updateAndSendCard = async (req, res) => {
     const { userText, userEmail } = req.body;
     
     // Ensure the uploaded file has a unique name
-    const uploadedFileName = req.file.filename;  // Get the unique filename from multer
-    const imagePath = path.join(__dirname, "..", "uploads", uploadedFileName); // Use the unique path
+    const uploadedFileName = req.file.filename;  
+    const imagePath = path.join(__dirname, "..", "uploads", uploadedFileName); 
 
     if (!req.file) {
       return res.status(400).send("No file uploaded.");
@@ -44,8 +44,8 @@ exports.updateAndSendCard = async (req, res) => {
       text: "Here is your updated card!",
       attachments: [
         {
-          filename: uploadedFileName,  // Use the unique filename for the attachment
-          path: imagePath,             // The unique path to the uploaded file
+          filename: uploadedFileName,  
+          path: imagePath,             
         },
       ],
     };

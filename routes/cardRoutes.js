@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const cardController = require("../controllers/cardController");
-const { v4: uuidv4 } = require("uuid");  // Import UUID for unique filenames
+const { v4: uuidv4 } = require("uuid");  
 
 // Configure multer storage to generate unique filenames
 const storage = multer.diskStorage({
@@ -12,8 +12,8 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = uuidv4();  // Generate a unique suffix
-    cb(null, `userCard_${uniqueSuffix}.png`);  // Use the unique filename
+    const uniqueSuffix = uuidv4(); 
+    cb(null, `userCard_${uniqueSuffix}.png`);  
   },
 });
 
